@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -39,14 +40,16 @@ class PostController extends Controller
         $request->validate(
             [
                 'title' => 'required|max:255',
+                'media' => 'required|max:255|url',
+                'author' => ['required', Rule::in(['Simone Giusti', 'Alessio Vietri', 'Jacopo Damiani'])],
                 'content' => 'required|max:65535',
-                'slug' => 'required|max:255|'
+                'slug' => 'required|max:255|',
             ]
             );
             $data = $request->all();
-            $newPost = new Post;
-            $newPost->fill($data);
-            $newPost->save();
+            $post = new Post;
+            $post->fill($data);
+            $post->save();
             return redirect()->route('admin.posts.index');
     }
 
@@ -58,7 +61,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -67,9 +71,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -79,9 +83,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate(
+            [
+                'title' => 'required|max:255',
+                'media' => 'required|max:255|url',
+                'author' => ['required', Rule::in(['Simone Giusti', 'Alessio Vietri', 'Jacopo Damiani'])],
+                'content' => 'required|max:65535',
+                'slug' => 'required|max:255|',
+            ]
+            );
+            $data = $request->all();
+            $post->update($data);
+            $post->save();
+            return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'La modifica al post è stata apportata!');
     }
 
     /**
@@ -90,8 +106,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('deleted', 'Il post è stato eliminato!');
     }
 }

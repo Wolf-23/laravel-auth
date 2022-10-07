@@ -7,9 +7,10 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
                 <th scope="col">Slug</th>
-                <th scope="col">Gestisci</th>
+                <th scope="col" class="text-center">Gestisci</th>
               </tr>
             </thead>
             <tbody class="table-light text-dark">
@@ -17,10 +18,16 @@
                 <tr>
                     <th scope="row">{{$post->id}}</th>
                     <td>{{$post->title}}</td>
+                    <td>{{$post->author}}</td>
                     <td>{{$post->slug}}</td>
-                    <td>
-                        <a href="#" class="btn btn-success">Vedi</a>
-                        <a href="#" class="btn btn-warning">Modifica</a>
+                    <td class="text-center">
+                        <a href="{{route('admin.posts.show', ['post' => $post->id])}}" class="btn btn-success">Vedi</a>
+                        <a href="{{route('admin.posts.edit', ['post' => $post->id])}}"  class="btn btn-warning">Modifica</a>
+                        <form class="d-inline-block" action="{{route('admin.posts.destroy', ['post' => $post])}}" method="POST">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger">Elimina</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
