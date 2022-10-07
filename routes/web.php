@@ -17,9 +17,16 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::middleware('auth')
-->namespace('Admin')
-->name('admin')
-->prefix('admin')
-->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
+    ->namespace('Admin')
+    ->name('admin.')
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/', 'HomeController@index')->name('home');
+        Route::resource('posts', 'PostController');
 });
+
+// Intercetto tutte le rotte che non vengono intercettate dall'istruzione precedente
+
+Route::get("{any?}", function() {
+    return view("guest.home");
+})->where("any", ".*");
