@@ -5,9 +5,9 @@
         <form class="my-5" action="{{route('admin.posts.store')}}" method="POST">
             @csrf 
             <div class="mb-3">
-                <label for="name" class="form-label">Title</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{old('name')}}"/>
-                @error('name')
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{old('title')}}"/>
+                @error('title')
                     <div class='invalid-feedback alert alert-danger p-1'>
                         {{$message}}
                     </div>

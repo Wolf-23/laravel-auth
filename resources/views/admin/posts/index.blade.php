@@ -7,9 +7,8 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Name</th>
+                <th scope="col">Slug</th>
                 <th scope="col">Gestisci</th>
               </tr>
             </thead>
@@ -19,7 +18,10 @@
                     <th scope="row">{{$post->id}}</th>
                     <td>{{$post->title}}</td>
                     <td>{{$post->slug}}</td>
-                    <td>bottoni</td>
+                    <td>
+                        <a href="#" class="btn btn-success">Vedi</a>
+                        <a href="#" class="btn btn-warning">Modifica</a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

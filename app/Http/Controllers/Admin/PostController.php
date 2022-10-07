@@ -38,7 +38,7 @@ class PostController extends Controller
     {
         $request->validate(
             [
-                'name' => 'required|max:255',
+                'title' => 'required|max:255',
                 'content' => 'required|max:65535',
                 'slug' => 'required|max:255|'
             ]
