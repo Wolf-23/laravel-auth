@@ -9,8 +9,6 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-
-
     protected function slugCalc($title) {
         $slug = Str::slug($title, '-');
         $check = Post::where('slug', $slug)->first();
@@ -126,5 +124,23 @@ class PostController extends Controller
     {
         $post->delete();
         return redirect()->route('admin.posts.index')->with('deleted', 'Il post è stato eliminato!');
+    }
+
+    public function showSimone(Post $post)
+    {
+        $posts = Post::where('author', 'Simone Giusti')->get();
+        return view('admin.posts.simone', compact('posts'));
+    }
+
+    public function showAlessio(Post $post)
+    {
+        $posts = Post::where('author', 'Alessio Vietri')->get();
+        return view('admin.posts.alessio', compact('posts'));
+    }
+
+    public function showJacopo(Post $post)
+    {
+        $posts = Post::where('author', 'Jacopo Damiani')->get();
+        return view('admin.posts.jacopo', compact('posts'));
     }
 }

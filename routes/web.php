@@ -20,13 +20,19 @@ Route::middleware('auth')
     ->namespace('Admin')
     ->name('admin.')
     ->prefix('admin')
-    ->group(function () {
-        Route::get('/', 'HomeController@index')->name('home');
-        Route::resource('posts', 'PostController');
+->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::resource('posts', 'PostController');
+    Route::get('/simone', 'PostController@showSimone')->name('posts.simone');
+    Route::get('/alessio', 'PostController@showAlessio')->name('posts.alessio');
+    Route::get('/jacopo', 'PostController@showJacopo')->name('posts.jacopo');
 });
-
+    
+    
 // Intercetto tutte le rotte che non vengono intercettate dall'istruzione precedente
-
+    
 Route::get("{any?}", function() {
     return view("guest.home");
 })->where("any", ".*");
+
+    
