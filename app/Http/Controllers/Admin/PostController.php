@@ -50,7 +50,7 @@ class PostController extends Controller
             $post = new Post;
             $post->fill($data);
             $post->save();
-            return redirect()->route('admin.posts.index');
+            return redirect()->route('admin.posts.index')->with('status', 'Post creato con successo!');
     }
 
     /**
@@ -93,11 +93,11 @@ class PostController extends Controller
                 'content' => 'required|max:65535',
                 'slug' => 'required|max:255|',
             ]
-            );
-            $data = $request->all();
-            $post->update($data);
-            $post->save();
-            return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'La modifica al post è stata apportata!');
+        );
+        $data = $request->all();
+        $post->update($data);
+        $post->save();
+        return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'La modifica al post è stata apportata!');
     }
 
     /**
