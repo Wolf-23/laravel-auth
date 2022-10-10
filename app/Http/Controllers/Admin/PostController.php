@@ -5,9 +5,23 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
+
+    protected function slugCalc($title) {
+        $slug = Str::slug($title, '-');
+        $check = Post::where('slug', $slug)->first();
+        $counter = 1;
+        while($check) {
+            $slug = Str::slug($title . '-' . $counter . '-');
+            $counter++;
+            $check = Post::where('slug', $slug)->first();
+        }
+        return $slug;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -43,12 +57,13 @@ class PostController extends Controller
                 'media' => 'required|max:255|url',
                 'author' => ['required', Rule::in(['Simone Giusti', 'Alessio Vietri', 'Jacopo Damiani'])],
                 'content' => 'required|max:65535',
-                'slug' => 'required|max:255|',
             ]
             );
             $data = $request->all();
             $post = new Post;
             $post->fill($data);
+            $slug = $this->slugCalc($post->title);
+            $post->slug = $slug;
             $post->save();
             return redirect()->route('admin.posts.index')->with('status', 'Post creato con successo!');
     }
@@ -90,13 +105,15 @@ class PostController extends Controller
                 'media' => 'required|max:255|url',
                 'author' => ['required', Rule::in(['Simone Giusti', 'Alessio Vietri', 'Jacopo Damiani'])],
                 'content' => 'required|max:65535',
-                'slug' => 'required|max:255|',
             ]
         );
         $data = $request->all();
+        if ($post->title !== $data['title']) {
+            $data['slug'] = $this->slugCalc($data['title']);
+        }
         $post->update($data);
         $post->save();
-        return redirect()->route('admin.posts.index', ['post' => $post])->with('status', 'La modifica al post è stata apportata!');
+        return redirect()->route('admin.posts.index')->with('status', 'La modifica al post è stata apportata!');
     }
 
     /**

@@ -49,16 +49,6 @@
                     </div>
                 @enderror   
             </div>
-            {{-- SLUG --}}
-            <div class="mb-3">
-                <label for="slug" class="form-label">Slug</label>
-                <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{old('slug', $post->slug)}}"/>
-                @error('slug')
-                    <div class='invalid-feedback alert alert-danger p-1'>
-                        {{$message}}
-                    </div>
-                @enderror
-            </div>
             <button type="submit" class="btn btn-success">Applica Modifiche</button>
             <a class="btn btn-primary d-inline-block" href="{{route('admin.posts.index')}}">Annulla</a>
         </form>
